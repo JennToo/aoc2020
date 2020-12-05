@@ -40,15 +40,17 @@ fn pass_to_coords(pass: &str, rows: usize, columns: usize) -> (usize, usize) {
 }
 
 fn find_singular_gap(values: &[usize]) -> usize {
-    let mut previous = values[0];
-    for value in &values[1..] {
-        if *value == previous + 2 {
-            return *value - 1;
-        }
-        previous = *value;
-    }
-
-    unreachable!("Error in problem");
+    *values
+        .iter()
+        .zip(&values[1..])
+        .find_map(|(previous, next)| {
+            if previous + 2 == *next {
+                Some(previous)
+            } else {
+                None
+            }
+        })
+        .unwrap()
 }
 
 #[test]
