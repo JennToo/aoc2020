@@ -5,9 +5,13 @@ use std::collections::HashMap;
 
 advent_main!(day4, "data/day4_input.txt");
 
-fn day4(lines: &Vec<String>) -> (usize, usize) {
+fn day4(lines: &[String]) -> (usize, usize) {
     let line_groups = group_lines_by_blank(&lines);
-    let passports: Vec<_> = line_groups.iter().map(Passport::from_lines).collect();
+    let passports: Vec<_> = line_groups
+        .iter()
+        .map(Vec::as_slice)
+        .map(Passport::from_lines)
+        .collect();
 
     let part1 = passports
         .iter()
@@ -33,7 +37,7 @@ lazy_static! {
 }
 
 impl Passport {
-    fn from_lines(lines: &Vec<&str>) -> Passport {
+    fn from_lines(lines: &[&str]) -> Passport {
         Passport(
             lines
                 .iter()
@@ -119,7 +123,11 @@ iyr:2011 ecl:brn hgt:59in
     .collect();
 
     let line_groups = group_lines_by_blank(&lines);
-    let result: Vec<_> = line_groups.iter().map(Passport::from_lines).collect();
+    let result: Vec<_> = line_groups
+        .iter()
+        .map(Vec::as_slice)
+        .map(Passport::from_lines)
+        .collect();
 
     println!("{:?}", result);
     assert_eq!(result.len(), 4);

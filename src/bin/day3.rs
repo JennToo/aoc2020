@@ -3,8 +3,8 @@ use itertools::Itertools;
 
 advent_main!(day3, "data/day3_input.txt");
 
-fn day3(lines: &Vec<String>) -> (usize, usize) {
-    let grid = Grid::from_lines(&lines);
+fn day3(lines: &[String]) -> (usize, usize) {
+    let grid = Grid::from_lines(lines);
 
     let part1 = traverse_and_count(&grid, 3, 1);
     let part2: usize = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
@@ -41,7 +41,7 @@ struct Grid {
 }
 
 impl Grid {
-    fn from_lines(lines: &Vec<String>) -> Grid {
+    fn from_lines(lines: &[String]) -> Grid {
         let true_width = lines[0].len();
         let true_height = lines.len();
 
@@ -73,7 +73,7 @@ impl Grid {
 
 #[test]
 fn test_grid() {
-    let grid = Grid::from_lines(&read_lines("data/day3_input.txt").unwrap());
+    let grid = Grid::from_lines(&aoc2020::read_lines("data/day3_input.txt").unwrap());
 
     assert_eq!(grid.true_width, 31);
 

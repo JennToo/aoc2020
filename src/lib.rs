@@ -9,7 +9,7 @@ pub fn read_lines<P: AsRef<Path>>(path: P) -> io::Result<Vec<String>> {
         .collect::<io::Result<Vec<String>>>()?)
 }
 
-pub fn group_lines_by_blank<'a>(lines: &'a Vec<String>) -> Vec<Vec<&'a str>> {
+pub fn group_lines_by_blank<'a>(lines: &'a [String]) -> Vec<Vec<&'a str>> {
     let mut result = Vec::new();
     let mut item = Vec::new();
 
@@ -31,7 +31,7 @@ macro_rules! advent_main {
     ($impl:ident, $data:expr) => {
         fn main() {
             let lines = aoc2020::read_lines($data).expect("Failed to read data");
-            let (part1, part2) = $impl(&lines);
+            let (part1, part2) = $impl(lines.as_slice());
             println!("Part 1: {}", part1);
             println!("Part 2: {}", part2);
         }

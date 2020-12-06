@@ -2,13 +2,13 @@ use aoc2020::advent_main;
 
 advent_main!(day5, "data/day5_input.txt");
 
-fn day5(lines: &Vec<String>) -> (usize, usize) {
+fn day5(lines: &[String]) -> (usize, usize) {
     let coords: Vec<_> = lines
         .iter()
         .map(|pass| pass_to_coords(pass, 128, 8))
         .collect();
     let mut ids: Vec<_> = coords.iter().map(|(row, col)| row * 8 + col).collect();
-    ids.sort();
+    ids.sort_unstable();
 
     let part1 = ids.iter().max().unwrap();
     let part2 = find_singular_gap(ids.as_slice());

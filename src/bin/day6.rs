@@ -4,10 +4,11 @@ use std::hash::Hash;
 
 advent_main!(day6, "data/day6_input.txt");
 
-fn day6(lines: &Vec<String>) -> (usize, usize) {
+fn day6(lines: &[String]) -> (usize, usize) {
     let grouped_lines = group_lines_by_blank(&lines);
     let groups: Vec<_> = grouped_lines
         .iter()
+        .map(Vec::as_slice)
         .map(QuestionGroup::from_lines)
         .collect();
 
@@ -23,7 +24,7 @@ struct QuestionGroup {
 }
 
 impl QuestionGroup {
-    fn from_lines(lines: &Vec<&str>) -> QuestionGroup {
+    fn from_lines(lines: &[&str]) -> QuestionGroup {
         let responses: Vec<HashSet<char>> =
             lines.iter().map(|line| line.chars().collect()).collect();
 

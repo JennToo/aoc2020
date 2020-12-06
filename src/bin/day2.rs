@@ -4,7 +4,7 @@ use regex::Regex;
 
 advent_main!(day2, "data/day2_input.txt");
 
-fn day2(lines: &Vec<String>) -> (usize, usize) {
+fn day2(lines: &[String]) -> (usize, usize) {
     let parsed_lines = lines
         .iter()
         .map(|line| parse_line(line.as_ref()))
@@ -38,7 +38,7 @@ fn parse_line(line: &str) -> (String, PasswordCharRule) {
     (
         captures[4].into(),
         PasswordCharRule {
-            char_: captures[3].chars().nth(0).unwrap(),
+            char_: captures[3].chars().next().unwrap(),
             min: captures[1].parse::<usize>().unwrap(),
             max: captures[2].parse::<usize>().unwrap(),
         },
