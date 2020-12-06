@@ -1,11 +1,12 @@
-use aoc2020::read_lines;
+use aoc2020::{group_lines_by_blank, read_lines};
 use lazy_static::lazy_static;
 use regex::Regex;
 use std::collections::HashMap;
 
 fn main() {
     let lines = read_lines("data/day4_input.txt").expect("Could not open file");
-    let passports = Passport::from_lines(&lines);
+    let line_groups = group_lines_by_blank(&lines);
+    let passports: Vec<_> = line_groups.iter().map(Passport::from_lines).collect();
 
     let part1 = passports
         .iter()
@@ -32,21 +33,17 @@ lazy_static! {
 }
 
 impl Passport {
-    fn from_lines(lines: &Vec<String>) -> Vec<Passport> {
-        let mut passports = Vec::new();
-        let mut records = HashMap::new();
-
-        for line in lines.iter() {
-            if line == "" {
-                passports.push(Passport(records));
-                records = HashMap::new();
-            } else {
-                slurp_records_from_line(line.as_ref(), &mut records);
-            }
-        }
-        passports.push(Passport(records));
-
-        passports
+    fn from_lines(lines: &Vec<&str>) -> Passport {
+        Passport(
+            lines
+                .iter()
+                .flat_map(|line| {
+                    RECORD_REGEX
+                        .captures_iter(line)
+                        .map(|captures| (captures[1].into(), captures[2].into()))
+                })
+                .collect(),
+        )
     }
 
     fn has_required_fields(&self) -> bool {
@@ -101,14 +98,6 @@ impl Passport {
     }
 }
 
-fn slurp_records_from_line(line: &str, records: &mut HashMap<String, String>) {
-    records.extend(
-        RECORD_REGEX
-            .captures_iter(line)
-            .map(|captures| (captures[1].into(), captures[2].into())),
-    )
-}
-
 #[test]
 fn test_passports_from_lines() {
     let lines: Vec<String> = "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
@@ -129,7 +118,8 @@ iyr:2011 ecl:brn hgt:59in
     .map(String::from)
     .collect();
 
-    let result = Passport::from_lines(&lines);
+    let line_groups = group_lines_by_blank(&lines);
+    let result: Vec<_> = line_groups.iter().map(Passport::from_lines).collect();
 
     println!("{:?}", result);
     assert_eq!(result.len(), 4);
