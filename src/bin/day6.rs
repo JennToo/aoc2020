@@ -1,10 +1,14 @@
-use aoc2020::read_lines;
+use aoc2020::{group_lines_by_blank, read_lines};
 use std::collections::HashSet;
 use std::hash::Hash;
 
 fn main() {
     let lines = read_lines("data/day6_input.txt").expect("Could not open file");
-    let groups = QuestionGroup::from_lines(&lines);
+    let grouped_lines = group_lines_by_blank(&lines);
+    let groups: Vec<_> = grouped_lines
+        .iter()
+        .map(QuestionGroup::from_lines)
+        .collect();
 
     let part1: usize = groups.iter().map(|group| group.someone.len()).sum();
     let part2: usize = groups.iter().map(|group| group.everyone.len()).sum();
@@ -19,31 +23,13 @@ struct QuestionGroup {
 }
 
 impl QuestionGroup {
-    fn from_lines(lines: &Vec<String>) -> Vec<QuestionGroup> {
-        let mut groups = Vec::new();
-        let mut responses: Vec<HashSet<char>> = Vec::new();
+    fn from_lines(lines: &Vec<&str>) -> QuestionGroup {
+        let responses: Vec<HashSet<char>> =
+            lines.iter().map(|line| line.chars().collect()).collect();
 
-        for line in lines.iter() {
-            if line == "" {
-                groups.push(Self::from_sets(responses));
-                responses = Vec::new();
-            } else {
-                let mut response = HashSet::new();
-                for char_ in line.chars() {
-                    response.insert(char_);
-                }
-                responses.push(response);
-            }
-        }
-        groups.push(Self::from_sets(responses));
-
-        groups
-    }
-
-    fn from_sets(sets: Vec<HashSet<char>>) -> QuestionGroup {
         QuestionGroup {
-            someone: sets.iter().fold(HashSet::new(), union_sets),
-            everyone: sets.iter().fold(sets[0].clone(), intersect_sets),
+            someone: responses.iter().fold(HashSet::new(), union_sets),
+            everyone: responses.iter().fold(responses[0].clone(), intersect_sets),
         }
     }
 }
