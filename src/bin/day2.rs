@@ -1,9 +1,10 @@
-use aoc2020::read_lines;
+use aoc2020::advent_main;
 use lazy_static::lazy_static;
 use regex::Regex;
 
-fn main() {
-    let lines = read_lines("data/day2_input.txt").expect("Failed to read file");
+advent_main!(day2, "data/day2_input.txt");
+
+fn day2(lines: &Vec<String>) -> (usize, usize) {
     let parsed_lines = lines
         .iter()
         .map(|line| parse_line(line.as_ref()))
@@ -18,8 +19,7 @@ fn main() {
         .filter(|(password, rule)| password_is_valid_indices(password.as_ref(), rule))
         .count();
 
-    println!("Part 1: {}", part1);
-    println!("Part 2: {}", part2);
+    (part1, part2)
 }
 
 #[derive(Debug, Eq, PartialEq)]

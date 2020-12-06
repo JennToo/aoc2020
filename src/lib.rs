@@ -25,3 +25,15 @@ pub fn group_lines_by_blank<'a>(lines: &'a Vec<String>) -> Vec<Vec<&'a str>> {
 
     result
 }
+
+#[macro_export]
+macro_rules! advent_main {
+    ($impl:ident, $data:expr) => {
+        fn main() {
+            let lines = aoc2020::read_lines($data).expect("Failed to read data");
+            let (part1, part2) = $impl(&lines);
+            println!("Part 1: {}", part1);
+            println!("Part 2: {}", part2);
+        }
+    };
+}

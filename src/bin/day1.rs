@@ -1,8 +1,9 @@
-use aoc2020::read_lines;
+use aoc2020::advent_main;
 use itertools::Itertools;
 
-fn main() {
-    let lines = read_lines("data/day1_input.txt").expect("Could not read input file");
+advent_main!(day1, "data/day1_input.txt");
+
+fn day1(lines: &Vec<String>) -> (i64, i64) {
     let items = lines
         .iter()
         .map(|line| line.parse::<i64>().expect("Invalid number"))
@@ -15,8 +16,7 @@ fn main() {
         .unwrap()
         .iter()
         .product();
-    println!("Part 1: {:?}", part1);
-    println!("Part 2: {:?}", part2);
+    (part1, part2)
 }
 
 fn find_items_that_sum_to(

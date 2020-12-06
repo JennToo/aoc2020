@@ -1,9 +1,10 @@
-use aoc2020::{group_lines_by_blank, read_lines};
+use aoc2020::{advent_main, group_lines_by_blank};
 use std::collections::HashSet;
 use std::hash::Hash;
 
-fn main() {
-    let lines = read_lines("data/day6_input.txt").expect("Could not open file");
+advent_main!(day6, "data/day6_input.txt");
+
+fn day6(lines: &Vec<String>) -> (usize, usize) {
     let grouped_lines = group_lines_by_blank(&lines);
     let groups: Vec<_> = grouped_lines
         .iter()
@@ -13,8 +14,7 @@ fn main() {
     let part1: usize = groups.iter().map(|group| group.someone.len()).sum();
     let part2: usize = groups.iter().map(|group| group.everyone.len()).sum();
 
-    println!("Part 1: {}", part1);
-    println!("Part 2: {}", part2);
+    (part1, part2)
 }
 
 struct QuestionGroup {

@@ -1,8 +1,8 @@
-use aoc2020::read_lines;
+use aoc2020::advent_main;
 
-fn main() {
-    let lines = read_lines("data/day5_input.txt").expect("Cant read file");
+advent_main!(day5, "data/day5_input.txt");
 
+fn day5(lines: &Vec<String>) -> (usize, usize) {
     let coords: Vec<_> = lines
         .iter()
         .map(|pass| pass_to_coords(pass, 128, 8))
@@ -12,9 +12,7 @@ fn main() {
 
     let part1 = ids.iter().max().unwrap();
     let part2 = find_singular_gap(ids.as_slice());
-
-    println!("Part 1: {}", part1);
-    println!("Part 2: {}", part2);
+    (*part1, part2)
 }
 
 fn pass_to_coords(pass: &str, rows: usize, columns: usize) -> (usize, usize) {

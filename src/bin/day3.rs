@@ -1,18 +1,17 @@
-use aoc2020::read_lines;
+use aoc2020::advent_main;
 use itertools::Itertools;
 
-fn main() {
-    let lines = read_lines("data/day3_input.txt").expect("Could not read file");
+advent_main!(day3, "data/day3_input.txt");
+
+fn day3(lines: &Vec<String>) -> (usize, usize) {
     let grid = Grid::from_lines(&lines);
 
     let part1 = traverse_and_count(&grid, 3, 1);
-    println!("Part 1: {}", part1);
-
     let part2: usize = [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
         .iter()
         .map(|(dx, dy)| traverse_and_count(&grid, *dx, *dy))
         .product();
-    println!("Part 2: {}", part2);
+    (part1, part2)
 }
 
 fn traverse_and_count(grid: &Grid, delta_x: usize, delta_y: usize) -> usize {

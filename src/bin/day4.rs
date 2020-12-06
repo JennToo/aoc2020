@@ -1,10 +1,11 @@
-use aoc2020::{group_lines_by_blank, read_lines};
+use aoc2020::{advent_main, group_lines_by_blank};
 use lazy_static::lazy_static;
 use regex::Regex;
 use std::collections::HashMap;
 
-fn main() {
-    let lines = read_lines("data/day4_input.txt").expect("Could not open file");
+advent_main!(day4, "data/day4_input.txt");
+
+fn day4(lines: &Vec<String>) -> (usize, usize) {
     let line_groups = group_lines_by_blank(&lines);
     let passports: Vec<_> = line_groups.iter().map(Passport::from_lines).collect();
 
@@ -17,8 +18,7 @@ fn main() {
         .filter(|passport| passport.is_valid())
         .count();
 
-    println!("Part 1: {}", part1);
-    println!("Part 2: {}", part2);
+    (part1, part2)
 }
 
 #[derive(Debug)]
