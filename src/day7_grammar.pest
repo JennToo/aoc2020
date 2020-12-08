@@ -1,0 +1,6 @@
+toplevel = { SOI ~ bag_identifier ~ " bags contain " ~ bag_contents ~ "." ~ EOI}
+bag_identifier = { word ~ " " ~ word }
+bag_contents = { (content_record ~ (", " ~ content_record)*) | "no other bags" }
+content_record = { count ~ " " ~ bag_identifier ~ " " ~ "bag" ~ "s"? }
+count = { ASCII_DIGIT* }
+word = _{ ASCII_ALPHANUMERIC+ }
